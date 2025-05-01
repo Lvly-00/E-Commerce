@@ -1,3 +1,5 @@
+import { Inertia } from '@inertiajs/inertia';
+
 import {
     IconBook,
     IconChartPie3,
@@ -64,7 +66,7 @@ const mockdata = [
     },
 ];
 
-function GuestHeader() {
+function AuthHeader() {
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
         useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
@@ -87,6 +89,15 @@ function GuestHeader() {
             </Group>
         </UnstyledButton>
     ));
+
+    const handleLogout = () => {
+        Inertia.post('/logout', {}, {
+          onSuccess: () => {
+              window.location.href='/login'; // Force a full reload
+          }
+        });
+
+      };
 
     return (
         <Box pb={30}>
@@ -174,8 +185,7 @@ function GuestHeader() {
                     />
 
                     <Group visibleFrom="sm">
-                        <Button variant="default"><a href="/login">Log in</a></Button>
-                        <Button><a href="/register">Sign up</a></Button>
+                        <Button><a href="/login"  onClick={handleLogout} >Logout</a></Button>
                     </Group>
 
                     <Burger
@@ -235,4 +245,4 @@ function GuestHeader() {
     );
 }
 
-export default GuestHeader;
+export default AuthHeader;
